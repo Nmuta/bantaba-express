@@ -1,7 +1,7 @@
 module.exports = {
   development: {
     client: 'pg',
-    connection: 'postgres://localhost/ionictest',
+    connection: 'postgres://localhost/bantaba_development',
   },
   production: {
     client: 'pg',
