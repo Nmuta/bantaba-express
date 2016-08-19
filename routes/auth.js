@@ -13,12 +13,12 @@ router.post('/signup', function(req, res, next) {
       console.log("3");
       bcrypt.hash(req.body.password, 10, function(err, hash) {
         console.log("here");
-        authQ.createUser(req.body.username, hash).then(function(){
+        authQ.createUser(req.body.username, hash, req.body.accountType).then(function(){
           authQ.getUserByName(req.body.username).then(function(user){
             console.log(user);
             req.session.loggedin=true;
             req.session.id=user[0].id
-            res.send({id:user[0].id, username:user[0].username})
+            res.send({id:user[0].id, username:user[0].username, accountType:user[0].account_type})
           })
         })
      })
@@ -29,11 +29,6 @@ router.post('/signup', function(req, res, next) {
   })
 });
 router.post('/login', function(req, res, nex){
-  // console.log(req);
-  console.log(req.session);
-  console.log(req.body);
-  console.log(req.params);
-  console.log(req.data);
   authQ.getUserByName(req.body.username).then(function(match){
     if(match.length===0){
       res.send('no such user');
@@ -42,7 +37,7 @@ router.post('/login', function(req, res, nex){
       if(bcrypt.compareSync(req.body.password, match[0].password)){
         req.session.loggedin=true;
         req.session.id=match[0].id
-        res.send({id:match[0].id, username:match[0].username})
+        res.send({id:match[0].id, username:match[0].username, accountType:match[0].account_type})
       }
       else{
         res.send('password doesnt match')
@@ -50,6 +45,10 @@ router.post('/login', function(req, res, nex){
 
     }
   })
+})
+router.get('/logout', function(req, res, next){
+  req.session= null;
+  res.send('logged out')
 })
 
 module.exports = router;

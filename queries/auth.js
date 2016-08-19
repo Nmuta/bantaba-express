@@ -1,8 +1,8 @@
 var knex=require('../db/knex');
 var bcrypt=require('bcrypt')
 module.exports={
-  createUser: function(username, hash){
-    return knex('users').insert({username:username, password:hash})
+  createUser: function(username, hash, accountType){
+    return knex('users').insert({username:username, password:hash, account_type:accountType})
   },
   userExists: function(username){
     return knex.raw(`SELECT * FROM users WHERE username ='${username}' LIMIT 1;`)
