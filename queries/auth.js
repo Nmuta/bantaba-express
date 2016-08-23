@@ -16,5 +16,17 @@ module.exports={
   login: function(user, req){
     req.session.loggedin=true;
     req.session.id=user.rows[0].id
-  }
+  },
+  createSession: function(user, token, date){
+    return knex('sessions').where({user_id:user.id}).del().then(function(){
+      return knex('sessions').insert({token:token, user_id:user.id, created:date})})
+  },
+  clearSession: function(token){
+    console.log(token);
+    return knex('sessions').where({token:token}).del()
+  },
+  getSession: function(token){
+    return knex('sessions').where({token:token}).select()
+  },
+
 }

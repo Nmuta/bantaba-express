@@ -3,7 +3,8 @@ exports.up = function(knex, Promise) {
     table.increments();
     table.string('username');
     table.string('password');
-    table.string('account_type')
+    table.integer('account_type')
+    table.boolean('validated').defaultTo(false)
     table.index('username')
   })
 };
