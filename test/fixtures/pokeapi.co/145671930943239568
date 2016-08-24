@@ -1,0 +1,14 @@
+GET /api/v1/ability/65/
+host: pokeapi.co
+
+HTTP/1.1 200 OK
+server: nginx/1.1.19
+date: Mon, 29 Feb 2016 04:15:09 GMT
+content-type: application/json
+transfer-encoding: chunked
+connection: close
+vary: Accept
+x-frame-options: SAMEORIGIN
+cache-control: s-maxage=360, max-age=360
+
+{"created": "2013-11-03T15:05:59.604253", "description": "", "id": 65, "modified": "2013-11-03T15:05:59.604217", "name": "Overgrow", "resource_uri": "/api/v1/ability/65/"}

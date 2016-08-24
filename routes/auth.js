@@ -28,7 +28,7 @@ router.post('/signup', function(req, res, next) {
             var date = dateSplit(Date());
 
             authQ.createSession(user[0], token, date).then(function(){
-              res.send({token:token, username:user[0].username, accountType:user[0].account_type})
+              res.send({token:token, username:user[0].username, id:user[0].id, accountType:user[0].account_type})
             })
           })
         })
@@ -40,6 +40,7 @@ router.post('/signup', function(req, res, next) {
   })
 });
 router.post('/login', function(req, res, nex){
+  console.log(req.body);
   authQ.getUserByName(req.body.username).then(function(match){
     if(match.length===0){
       res.send({error:true, message:'no such user'});
@@ -50,7 +51,7 @@ router.post('/login', function(req, res, nex){
         var date = dateSplit(Date());
 
         authQ.createSession(match[0], token, date).then(function(){
-          res.send({token:token, username:match[0].username, accountType:match[0].account_type})
+          res.send({token:token, username:match[0].username, id:match[0].id, accountType:match[0].account_type})
         })
       }
       else{
@@ -74,7 +75,7 @@ router.post('/getUser', function(req, res, next){
       }
       else{
         authQ.getUserById(session[0].user_id).then(function(match){
-          res.send({token:req.body.token, username:match[0].username, accountType:match[0].account_type})
+          res.send({token:req.body.token, username:match[0].username, id:match[0].id, accountType:match[0].account_type})
         })
       }
     })
