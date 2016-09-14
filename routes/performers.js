@@ -2,19 +2,15 @@ var express = require('express');
 var router = express.Router();
 var knex =require('../db/knex')
 var Events=require('../queries/events.js')
+var Performers= require('../queries/performers.js')
 /* GET home page. */
 router.get('/', function(req, res, next){
-  Events.getAll().then(function(results){
+  Performers.getAll().then(function(results){
     res.send(results  )
   })
 })
-router.get('/performers/:eventId', function(req, res, next){
-  Events.getPerformers(req.params.eventId).then(function(results){
-    res.send(results)
-  })
-})
-router.get('/followers/:eventId', function(req, res, next){
-  Events.getFollowers(req.params.eventId).then(function(results){
+router.get('/followers/:performerId', function(req, res, next){
+  Performers.getFollowers(req.params.performerId).then(function(results){
     res.send(results)
   })
 })

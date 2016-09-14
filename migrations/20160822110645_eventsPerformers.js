@@ -5,6 +5,9 @@ exports.up = function(knex, Promise) {
     table.string('name');
     table.dateTime('start')
     table.dateTime('end')
+    table.string('state');
+    table.string('city');
+    table.string('address');
     //event type?
     //location - def necessary, not totally sure how to do it yet- use address?
       //whatevers easiest for google maps api integration

@@ -1,5 +1,10 @@
 var knex=require('../db/knex');
 var bcrypt=require('bcrypt')
+var uuid = require('node-uuid');
+var nJwt = require('njwt');
+
+var secretKey = uuid.v4();
+
 module.exports={
   createUser: function(username, hash, accountType){
     return knex('users').insert({username:username, password:hash, account_type:accountType})
@@ -28,5 +33,19 @@ module.exports={
   getSession: function(token){
     return knex('sessions').where({token:token}).select()
   },
-
+  genToken:function(user){
+    console.log(user);
+    var claims = {
+      sub: user[0].id,
+      iss: 'bantaba-server',
+      permissions: user.account_type
+    }
+    var jwt = nJwt.create(claims,secretKey);
+    console.log(jwt);
+    return jwt.compact();
+  },
+  verifyToken:function(token){
+    
+    return nJwt.verify(token,secretKey)
+  }
 }

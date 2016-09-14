@@ -12,6 +12,7 @@ exports.up = function(knex, Promise) {
     table.foreign('account_type').references('id').inTable('account_types');
 
     table.boolean('validated').defaultTo(false)
+    table.string('state')
     table.index('username')
   }).createTable('admins', function(table){
     table.increments();

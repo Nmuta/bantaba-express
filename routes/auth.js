@@ -23,13 +23,12 @@ router.post('/signup', function(req, res, next) {
         }
         authQ.createUser(req.body.username, hash, account).then(function(){
           authQ.getUserByName(req.body.username).then(function(user){
-            console.log(user);
-            var token=randToken.generate(20);
-            var date = dateSplit(Date());
-
-            authQ.createSession(user[0], token, date).then(function(){
-              res.send({token:token, username:user[0].username, id:user[0].id, accountType:user[0].account_type})
-            })
+            res.send({token:authQ.genToken(user),
+              id:match[0].id,
+              username:match[0].username,
+              accountType:match[0].account_type,
+              validated:match[0].validated
+            });
           })
         })
      })
@@ -47,12 +46,7 @@ router.post('/login', function(req, res, nex){
     }
     else{
       if(bcrypt.compareSync(req.body.password, match[0].password)){
-        var token=randToken.generate(20);
-        var date = dateSplit(Date());
-
-        authQ.createSession(match[0], token, date).then(function(){
-          res.send({token:token, username:match[0].username, id:match[0].id, accountType:match[0].account_type})
-        })
+        res.send({token:authQ.genToken(match)});
       }
       else{
         res.send({error:true, message:'password doesnt match'})
@@ -61,24 +55,28 @@ router.post('/login', function(req, res, nex){
     }
   })
 })
-router.post('/logout', function(req, res, next){
-  authQ.clearSession(req.body.token).then(function(){
-    res.send('logged out')
 
-  });
-})
 router.post('/getUser', function(req, res, next){
   if(req.body.token){
-    authQ.getSession(req.body.token).then(function(session){
-      if(session.length===0){
-        res.send({error:true, message:'not logged in'})
-      }
-      else{
-        authQ.getUserById(session[0].user_id).then(function(match){
-          res.send({token:req.body.token, username:match[0].username, id:match[0].id, accountType:match[0].account_type})
-        })
-      }
-    })
+    try{
+      var token=authQ.verifyToken(req.body.token)
+      console.log(token);
+      authQ.getUserById(token.body.sub).then(function(match){
+        console.log(match);
+          res.send({
+            id:match[0].id,
+            username:match[0].username,
+            accountType:match[0].account_type,
+            validated:match[0].validated
+          })
+      })
+
+
+    }
+    catch(e){
+      console.log(e);
+      res.send({error:true, message:'invalid token'})
+    }
   }
   else{
     res.send({error:true, message:'not logged in'})

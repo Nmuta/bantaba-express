@@ -25,5 +25,8 @@ module.exports={
   },
   getFollowers:function(event_id){
     return knex('event_followers').where({event_id:event_id}).join('users', 'users.id', 'event_followers.user_id').select('user_id','username')
+  },
+  getPerformers:function(event_id){
+    return knex('event_performers').where({event_id:event_id}).join('performers', 'performers.id', 'event_performers.performer_id').select()
   }
 }

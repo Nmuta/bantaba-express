@@ -6,6 +6,7 @@ var knex = require('../db/knex');
 var authQ= require('../queries/auth.js')
 module.exports={
   loggedIn: function(req, res, next){
+    //check if jwt is valid
     console.log(req.params);
     authQ.getSession(req.params.token).then(function(session){
       if(session.length===0){
