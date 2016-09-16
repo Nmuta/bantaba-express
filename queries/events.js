@@ -31,5 +31,11 @@ module.exports={
   },
   getInState:function(stateId){
     return knex('events').where({state:stateId}).select();
+  },
+  create:function(specs){
+    var startDate=new Date(specs.startDate);
+    var endDate=new Date(specs.endDate);
+
+    return knex('events').insert({name:specs.name, start:startDate,  end:endDate, state:specs.state, city:specs.city, address:specs.address})
   }
 }

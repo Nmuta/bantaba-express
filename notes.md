@@ -9,6 +9,7 @@ to do here:
       -should be very restricted in terms of which accounts are authorized
         -admin only or whatever
             -try to find a way to secure that, dont worry about it too much though
+            
   route for saying a performer will be at an event
       -lets performers say they'll be at an event from the app
 

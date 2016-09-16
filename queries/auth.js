@@ -47,5 +47,8 @@ module.exports={
   verifyToken:function(token){
 
     return nJwt.verify(token,secretKey)
+  },
+  isAdmin:function(id){
+    return knex('admins').where({user_id:id}).select();
   }
 }
