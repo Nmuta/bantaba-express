@@ -23,11 +23,13 @@ router.post('/signup', function(req, res, next) {
         }
         authQ.createUser(req.body.username, hash, account).then(function(){
           authQ.getUserByName(req.body.username).then(function(user){
-            res.send({token:authQ.genToken(user),
+            res.send({token:authQ.genToken(user[0]),
               id:match[0].id,
               username:match[0].username,
               accountType:match[0].account_type,
-              validated:match[0].validated
+              validated:match[0].validated,
+              state:match[0].state
+
             });
           })
         })
@@ -46,7 +48,13 @@ router.post('/login', function(req, res, nex){
     }
     else{
       if(bcrypt.compareSync(req.body.password, match[0].password)){
-        res.send({token:authQ.genToken(match)});
+        res.send(  res.send({token:authQ.genToken(match[0]),
+            id:match[0].id,
+            username:match[0].username,
+            accountType:match[0].account_type,
+            validated:match[0].validated,
+            state:match[0].state
+          }))
       }
       else{
         res.send({error:true, message:'password doesnt match'})
@@ -67,7 +75,8 @@ router.post('/getUser', function(req, res, next){
             id:match[0].id,
             username:match[0].username,
             accountType:match[0].account_type,
-            validated:match[0].validated
+            validated:match[0].validated,
+            state:match[0].state
           })
       })
 

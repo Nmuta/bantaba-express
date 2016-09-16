@@ -28,5 +28,8 @@ module.exports={
   },
   getPerformers:function(event_id){
     return knex('event_performers').where({event_id:event_id}).join('performers', 'performers.id', 'event_performers.performer_id').select()
+  },
+  getInState:function(stateId){
+    return knex('events').where({state:stateId}).select();
   }
 }

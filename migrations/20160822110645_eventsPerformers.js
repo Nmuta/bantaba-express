@@ -16,6 +16,8 @@ exports.up = function(knex, Promise) {
     table.string('name');
     table.integer('user_id');
     table.foreign('user_id').references('id').inTable('users'); //lets you link
+    table.string('state');
+    table.string('bio')
     //performer type? stuff like that (can work this in later without too much trouble) - this would be super useful, let you tell who does what, get people in touch with other types of permormers or whatever,
     //bio?
     //image (link? upload- that'd be tricky)

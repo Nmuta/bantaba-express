@@ -18,6 +18,11 @@ router.get('/followers/:eventId', function(req, res, next){
     res.send(results)
   })
 })
+router.get('/state/:stateId', function(req, res, next){
+  Events.getInState(req.params.stateId).then(function(results){
+    res.send(results)
+  })
+})
 
 //get all events for a user
 

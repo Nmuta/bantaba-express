@@ -36,7 +36,7 @@ module.exports={
   genToken:function(user){
     console.log(user);
     var claims = {
-      sub: user[0].id,
+      sub: user.id,
       iss: 'bantaba-server',
       permissions: user.account_type
     }
@@ -45,7 +45,7 @@ module.exports={
     return jwt.compact();
   },
   verifyToken:function(token){
-    
+
     return nJwt.verify(token,secretKey)
   }
 }
