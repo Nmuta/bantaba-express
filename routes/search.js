@@ -42,5 +42,14 @@ router.get('/:searchType/:searchText', function(req, res, next){
       break;
   }
 })
-
+router.get('/list', function(req, res, next){
+  Events.getAll().then(function(events){
+    Performers.getAll().then(function(performers){
+      res.send({
+        events:events,
+        performers:performers
+      })
+    })
+  })
+})
 module.exports = router;
