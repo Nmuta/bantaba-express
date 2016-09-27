@@ -34,6 +34,13 @@ module.exports={
   },
   update:function(specs, performer_id){
     return knex('performers').update({name:specs.name, bio:specs.bio, state:specs.state}).where({id:performer_id});
+  },
+  delete:function(id){
+    return knex('event_performers').del().where({performer_id:id}).then(function(){
+      return knex('performer_followers').del().where({performer_id:id}).then(function(){
+        return knex('performers').del().where({id:id})
+      })
+    })
   }
 
 }

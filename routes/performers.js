@@ -58,12 +58,9 @@ router.post('/update/:performerId/:token', function(req, res, next){
     console.log(parsed);
     authQ.isAdmin(parsed.body.sub).then(function(matches){
       if(matches.length>=1){
-        bcrypt.hash(req.body.password, 10, function(err, hash) {
-          Performers.update(req.body, req.params.performerId).then(function(results){
-            res.send('words')
-          })
+        Performers.update(req.body, req.params.performerId).then(function(results){
+          res.send('words')
         })
-
       }
       else{
         res.send('not an admin')
@@ -75,10 +72,27 @@ router.post('/update/:performerId/:token', function(req, res, next){
     res.send('invalid')
   }
 })
-//id | username |                           password                           | account_type | validated | state
-//get all events for a user
+router.get('/delete/:performerId/:token', function(req, res, next){
+  try{
+    var parsed=authQ.verifyToken(req.params.token)
+    console.log(parsed);
+    authQ.isAdmin(parsed.body.sub).then(function(matches){
+      if(matches.length>=1){
+        Performers.delete(req.params.performerId).then(function(results){
+          res.send('words')
+        })
+      }
+      else{
+        res.send('not an admin')
+      }
+    })
+  }
+  catch(e){
+    console.log(e);
+    res.send('invalid')
+  }
 
-//get all events with a given performer
+})
 
-//create route (maybe need some sort of verification or something to avoid pointless entries? def something... might be too much with such a small userbase though (maybe use how may events are being stored in the database? -no validation required if very few (because why bother right), but dont let it get to much)) what about spamming with dummy accounts? captcha or something
+
 module.exports = router;

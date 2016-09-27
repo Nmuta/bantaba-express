@@ -42,6 +42,15 @@ module.exports={
     var startDate=new Date(specs.startDate);
     var endDate=new Date(specs.endDate);
 
-    return knex('events').update({name:specs.name, start:startDate,  end:endDate, state:specs.state, city:specs.city, address:specs.address}).where({id:id})
+    return knex('events').update({name:specs.name, start:startDate,  end:endDate, state:specs.state, city:specs.city, address:specs.address}).where({id:id});
+  },
+  delete:function(id){
+    return knex('event_performers').del().where({event_id:id}).then(function(){
+      //need to send alert here somehow or something....... (tricky but def doable)
+      return knex('event_followers').del().where({event_id:id}).then(function(){
+        return knex('events').del().where({id:id})
+
+      })
+    })
   }
 }

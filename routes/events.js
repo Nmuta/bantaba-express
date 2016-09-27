@@ -3,7 +3,7 @@ var router = express.Router();
 var knex =require('../db/knex')
 var Events=require('../queries/events.js')
 var authQ=require('../queries/auth.js')
-var bcrypt=require('bcrypt')
+  var bcrypt=require('bcrypt')
 /* GET home page. */
 router.get('/', function(req, res, next){
   Events.getAll().then(function(results){
@@ -60,12 +60,9 @@ router.post('/update/:eventId/:token', function(req, res,next){
     console.log(parsed);
     authQ.isAdmin(parsed.body.sub).then(function(matches){
       if(matches.length>=1){
-        bcrypt.hash(req.body.password, 10, function(err, hash) {
-          Events.update(req.body, req.params.eventId).then(function(results){
-            res.send('words')
-          })
+        Events.update(req.body, req.params.eventId).then(function(results){
+          res.send('words')
         })
-
       }
       else{
         res.send('not an admin')
@@ -76,6 +73,27 @@ router.post('/update/:eventId/:token', function(req, res,next){
     console.log(e);
     res.send('invalid')
   }
+})
+router.get('/delete/:eventId/:token', function(req, res, next){
+  try{
+    var parsed=authQ.verifyToken(req.params.token)
+    console.log(parsed);
+    authQ.isAdmin(parsed.body.sub).then(function(matches){
+      if(matches.length>=1){
+        Events.delete(req.params.eventId).then(function(results){
+          res.send('words')
+        })
+      }
+      else{
+        res.send('not an admin')
+      }
+    })
+  }
+  catch(e){
+    console.log(e);
+    res.send('invalid')
+  }
+
 })
 //get all events for a user
 
