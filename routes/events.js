@@ -3,6 +3,7 @@ var router = express.Router();
 var knex =require('../db/knex')
 var Events=require('../queries/events.js')
 var authQ=require('../queries/auth.js')
+var bcrypt=require('bcrypt')
 /* GET home page. */
 router.get('/', function(req, res, next){
   Events.getAll().then(function(results){
@@ -52,6 +53,29 @@ router.get('/state/:stateId', function(req, res, next){
   Events.getInState(req.params.stateId).then(function(results){
     res.send(results)
   })
+})
+router.post('/update/:eventId/:token', function(req, res,next){
+  try{
+    var parsed=authQ.verifyToken(req.params.token)
+    console.log(parsed);
+    authQ.isAdmin(parsed.body.sub).then(function(matches){
+      if(matches.length>=1){
+        bcrypt.hash(req.body.password, 10, function(err, hash) {
+          Events.update(req.body, req.params.eventId).then(function(results){
+            res.send('words')
+          })
+        })
+
+      }
+      else{
+        res.send('not an admin')
+      }
+    })
+  }
+  catch(e){
+    console.log(e);
+    res.send('invalid')
+  }
 })
 //get all events for a user
 

@@ -37,5 +37,11 @@ module.exports={
     var endDate=new Date(specs.endDate);
 
     return knex('events').insert({name:specs.name, start:startDate,  end:endDate, state:specs.state, city:specs.city, address:specs.address})
+  },
+  update:function(specs, id){
+    var startDate=new Date(specs.startDate);
+    var endDate=new Date(specs.endDate);
+
+    return knex('events').update({name:specs.name, start:startDate,  end:endDate, state:specs.state, city:specs.city, address:specs.address}).where({id:id})
   }
 }

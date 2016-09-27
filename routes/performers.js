@@ -3,18 +3,79 @@ var router = express.Router();
 var knex =require('../db/knex')
 var Events=require('../queries/events.js')
 var Performers= require('../queries/performers.js')
+var authQ=require('../queries/auth.js')
+var bcrypt=require('bcrypt')
+
 /* GET home page. */
 router.get('/', function(req, res, next){
   Performers.getAll().then(function(results){
     res.send(results  )
   })
 })
+router.post('/create', function(req, res, next){
+    //do a bunch of shit
+    //ignore hours and seconds
+    //parse input, validate thing, make sure it's an admin account..........
+    //in post request- token, specs for new event
+    console.log(req.body);
+    console.log(req.body.startDate);
+    try{
+      var parsed=authQ.verifyToken(req.body.token)
+      console.log(parsed);
+      authQ.isAdmin(parsed.body.sub).then(function(matches){
+        if(matches.length>=1){
+          bcrypt.hash(req.body.password, 10, function(err, hash) {
+
+            authQ.createUser(req.body.username, hash, 3).then(function(id){
+              console.log(id);
+              Performers.create(req.body, id).then(function(){
+                res.send('created')
+              })
+            })
+          })
+
+        }
+        else{
+          res.send('not an admin')
+        }
+      })
+    }
+    catch(e){
+      console.log(e);
+      res.send('invalid')
+    }
+})
 router.get('/followers/:performerId', function(req, res, next){
   Performers.getFollowers(req.params.performerId).then(function(results){
     res.send(results)
   })
-})
+});
+router.post('/update/:performerId/:token', function(req, res, next){
+  console.log(req.body);
 
+  try{
+    var parsed=authQ.verifyToken(req.params.token)
+    console.log(parsed);
+    authQ.isAdmin(parsed.body.sub).then(function(matches){
+      if(matches.length>=1){
+        bcrypt.hash(req.body.password, 10, function(err, hash) {
+          Performers.update(req.body, req.params.performerId).then(function(results){
+            res.send('words')
+          })
+        })
+
+      }
+      else{
+        res.send('not an admin')
+      }
+    })
+  }
+  catch(e){
+    console.log(e);
+    res.send('invalid')
+  }
+})
+//id | username |                           password                           | account_type | validated | state
 //get all events for a user
 
 //get all events with a given performer

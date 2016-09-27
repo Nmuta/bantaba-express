@@ -7,7 +7,7 @@ var secretKey = uuid.v4();
 
 module.exports={
   createUser: function(username, hash, accountType){
-    return knex('users').insert({username:username, password:hash, account_type:accountType})
+    return knex('users').insert({username:username, password:hash, account_type:accountType}).returning('id')
   },
   userExists: function(username){
     return knex.raw(`SELECT * FROM users WHERE username ='${username}' LIMIT 1;`)

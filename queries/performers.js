@@ -28,5 +28,12 @@ module.exports={
   },
   getWithUsers:function(){
     return knex('performers').join('users', 'users.id', 'performers.id').select('performers.id', 'performers.name', 'users.validated', 'users.state')
+  },
+  create:function(specs, user_id){
+    return knex('performers').insert({name:specs.name, user_id:user_id[0], state:specs.state, bio:specs.bio});
+  },
+  update:function(specs, performer_id){
+    return knex('performers').update({name:specs.name, bio:specs.bio, state:specs.state}).where({id:performer_id});
   }
+
 }
