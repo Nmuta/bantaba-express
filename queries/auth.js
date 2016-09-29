@@ -50,5 +50,8 @@ module.exports={
   },
   isAdmin:function(id){
     return knex('admins').where({user_id:id}).select();
+  },
+  ownsPerformerAcc:function(user_id, performer_id){
+    return knex('performers').where({user_id:user_id, id:performer_id})
   }
 }

@@ -57,13 +57,25 @@ router.post('/update/:performerId/:token', function(req, res, next){
     var parsed=authQ.verifyToken(req.params.token)
     console.log(parsed);
     authQ.isAdmin(parsed.body.sub).then(function(matches){
-      if(matches.length>=1){
+      if(matches.length>=1 ){
         Performers.update(req.body, req.params.performerId).then(function(results){
           res.send('words')
         })
       }
       else{
-        res.send('not an admin')
+        authQ.ownsPerformerAcc(parsed.body.sub, req.params.performerId).then(function(matches){
+          if(matches.length>=1 ){
+            console.log("there is a match");
+            Performers.update(req.body, req.params.performerId).then(function(results){
+              res.send('words')
+            })
+
+          }
+          else{
+            res.send('not authorized')
+
+          }
+        })
       }
     })
   }
@@ -93,6 +105,10 @@ router.get('/delete/:performerId/:token', function(req, res, next){
   }
 
 })
-
+router.get('/performances/:performerId', function(req, res, next){
+  Performers.getEvents(req.params.performerId).then(function(results){
+    res.send(results);
+  })
+})
 
 module.exports = router;

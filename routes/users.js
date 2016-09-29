@@ -22,6 +22,15 @@ router.get('/followP/:token/:performerId', function(req, res, next){
 router.get('/unfollowP/:token/:performerId', function(req, res, next){
   checkMatch(req, res, next, unfollowP)
 })
+router.get('/profile/:token', function(req, res, next){
+  checkMatch(req, res, next, sendProfile);
+})
+router.get('/addPerformance/:token/:eventId', function(req,res, next){
+  checkMatch(req, res, next, addPerformance);
+})
+router.get('/removePerformance/:token/:eventId', function(req,res, next){
+  checkMatch(req, res, next, removePerformance);
+})
 function checkMatch(req, res, next, callback){
   try{
     var parsed=authQ.verifyToken(req.params.token)
@@ -31,6 +40,25 @@ function checkMatch(req, res, next, callback){
     console.log(e);
     res.send('invalid')
   }
+}
+function addPerformance(req, res, next, parsed){
+  Performers.getFromUser(parsed).then(function(results){
+    Performers.addPerformance(results[0].id, req.params.eventId).then(function(results){
+      res.send('added')
+    })
+  })
+}
+function removePerformance(req, res, next, parsed){
+  Performers.getFromUser(parsed).then(function(results){
+    Performers.removePerformance(results[0].id, req.params.eventId).then(function(results){
+      res.send('added')
+    })
+  })
+}
+function sendProfile(req, res, next, parsed){
+  Performers.getFromUser(parsed).then(function(results){
+    res.send(results)
+  })
 }
 function followE(req, res, next, parsed){
   Events.follow(parsed, req.params.eventId).then(function(results){
