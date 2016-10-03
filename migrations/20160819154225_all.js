@@ -10,7 +10,6 @@ exports.up = function(knex, Promise) {
     table.string('password');
     table.integer('account_type')
     table.foreign('account_type').references('id').inTable('account_types');
-
     table.string('state')
     table.index('username')
   }).createTable('admins', function(table){
@@ -19,13 +18,6 @@ exports.up = function(knex, Promise) {
     table.foreign('user_id').references('id').inTable('users');
     table.string('email');
 
-  }).createTable('sessions', function(table){
-    table.increments();
-    table.string('token');
-    table.index('token')
-    table.integer('user_id');
-    table.foreign('user_id').references('id').inTable('users');
-    table.dateTime('created')
   })
 };
 

@@ -57,7 +57,13 @@ function removePerformance(req, res, next, parsed){
 }
 function sendProfile(req, res, next, parsed){
   Performers.getFromUser(parsed).then(function(results){
-    res.send(results)
+    Performers.getFollowers(results[0].id).then(function(followers){
+      console.log("logging followers");
+      console.log(followers);
+      results[0].follower_count=followers.length
+      res.send(results)
+
+    })
   })
 }
 function followE(req, res, next, parsed){

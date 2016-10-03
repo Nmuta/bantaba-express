@@ -21,14 +21,14 @@ router.post('/signup', function(req, res, next) {
         else if(account===1){
         account=2
         }
-        authQ.createUser(req.body.username, hash, account).then(function(){
+        authQ.createUser(req.body.username, hash, account, req.body.state).then(function(){
           authQ.getUserByName(req.body.username).then(function(user){
             res.send({token:authQ.genToken(user[0]),
-              id:match[0].id,
-              username:match[0].username,
-              accountType:match[0].account_type,
-              validated:match[0].validated,
-              state:match[0].state
+              id:user[0].id,
+              username:user[0].username,
+              accountType:user[0].account_type,
+              validated:user[0].validated,
+              state:user[0].state
 
             });
           })
