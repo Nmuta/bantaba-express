@@ -4,7 +4,6 @@ var uuid = require('node-uuid');
 var nJwt = require('njwt');
 
 var secretKey = process.env.SECRET_KEY || uuid.v4();
-console.log(secretKey);
 module.exports={
   createUser: function(username, hash, accountType){
     return knex('users').insert({username:username, password:hash, account_type:accountType}).returning('id')
