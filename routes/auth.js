@@ -102,6 +102,7 @@ router.get('/ionic', function(req, res) {
             '&state=' + encodeURIComponent(state) +
             // TODO: Take out the redirect_uri parameter before production
             '&redirect_uri=' + 'https://api.ionic.io/auth/integrations/custom/success';
+          console.log(url);
           return res.redirect(url);
         }
         else{
