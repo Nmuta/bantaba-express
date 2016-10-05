@@ -72,7 +72,6 @@ router.get('/ionic', function(req, res) {
   // request received from Ionic Auth
   var redirectUri = req.query.redirect_uri;
   var state = req.query.state;
-  console.log(req);
   try {
     var incomingToken = nJwt.verify(req.query.token, secretKey);
   } catch (ex) { // lots of stuff can go wrong while decoding the jwt
@@ -90,7 +89,9 @@ router.get('/ionic', function(req, res) {
     }
     else{
       if(bcrypt.compareSync(password, match[0].password)){
+        console.log('matched');
         var outgoingToken = nJwt.sign({"user_id": user_id}, secretKey);
+        console.log('did sign');
         var url = redirectUri +
           '&token=' + encodeURIComponent(outgoingToken) +
           '&state=' + encodeURIComponent(state) +
