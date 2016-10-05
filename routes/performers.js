@@ -101,34 +101,40 @@ router.post('/notify/:performerId/:token', function(req, res, next){
           if(matches.length>=1 ){
             console.log("there is a match");
             Performers.createNotification(req.body, req.params.performerId).then(function(results){
-              var options={
-                url:"https://api.ionic.io/push/notifications",
-                method:'POST',
-                json:true,
-                headers: {
-                   'Authorization': 'Bearer ' + process.env.API_TOKEN,
-                   'Content-Type': 'application/json'
-                 },
-                body: {
-                    "external_ids":["2"],
-                    "profile": "dev",
-                    "notification": {
-                        "message": "Hello World!"
-                    }
+              Performers.getFollowers(req.params.performerId).then(function(followers){
+                var arr=followers.map(function(follower){
+                  return follower.id+"";
+                })
+                var options={
+                  url:"https://api.ionic.io/push/notifications",
+                  method:'POST',
+                  json:true,
+                  headers: {
+                     'Authorization': 'Bearer ' + process.env.API_TOKEN,
+                     'Content-Type': 'application/json'
+                   },
+                  body: {
+                      "external_ids":arr,
+                      "profile": "dev",
+                      "notification": {
+                          "message": req.body.text
+                      }
+                  }
                 }
-              }
 
 
 
 
-              request(options,function (error, response, body) {
-                if (!error && response.statusCode == 200) {
-                  console.log(body) // Show the HTML for the Google homepage.
-                }
-                console.log(body);
-                res.send('finished')
+                request(options,function (error, response, body) {
+                  if (!error && response.statusCode == 200) {
+                    console.log(body) // Show the HTML for the Google homepage.
+                  }
+                  console.log(body);
+                  res.send('finished')
 
+                })
               })
+
             })
 
           }
