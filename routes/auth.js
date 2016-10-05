@@ -76,8 +76,8 @@ router.get('/ionic', function(req, res) {
   try {
     var incomingToken = nJwt.verify(req.query.token, secretKey);
     console.log(incomingToken);
-    var username = incomingToken.data.username;
-    var password = incomingToken.data.password;
+    var username = incomingToken.body.data.username;
+    var password = incomingToken.body.data.password;
     var user_id;
     console.log("no error, i guess");
     authQ.getUserByName(username).then(function(match){
