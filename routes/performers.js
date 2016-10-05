@@ -130,6 +130,7 @@ router.post('/notify/:performerId/:token', function(req, res, next){
                     console.log(body) // Show the HTML for the Google homepage.
                   }
                   console.log(body);
+                  console.log(body.notification);
                   res.send('finished')
 
                 })
