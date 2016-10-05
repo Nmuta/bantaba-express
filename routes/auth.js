@@ -89,22 +89,26 @@ router.get('/ionic', function(req, res) {
         if(bcrypt.compareSync(password, match[0].password)){
           console.log('matched');
           // var outgoingToken = nJwt.sign({"user_id": user_id}, secretKey);
-          var claims = {
-            user_id:match[0].id.toString(),
-            sub: match[0].id,
-            iss: 'bantaba-server',
-            permissions: match[0].account_type
-          }
-          var outgoingToken = nJwt.create(claims,secretKey);
-          console.log('did sign');
-          var url = redirectUri +
-            '&token=' + encodeURIComponent(outgoingToken) +
-            '&state=' + encodeURIComponent(state) 
-            // TODO: Take out the redirect_uri parameter before production
-            // '&redirect_uri=' + 'https://api.ionic.io/auth/integrations/custom/success';
-          console.log(url);
-          return res.redirect(url)
-          console.log("passed redirect");
+          Users.getFollowedEvents(req.params.id).then(function(results){
+            var claims = {
+              user_id:match[0].id.toString(),
+              following:results,
+              sub: match[0].id,
+              iss: 'bantaba-server',
+              permissions: match[0].account_type
+            }
+            var outgoingToken = nJwt.create(claims,secretKey);
+            console.log('did sign');
+            var url = redirectUri +
+              '&token=' + encodeURIComponent(outgoingToken) +
+              '&state=' + encodeURIComponent(state)
+              // TODO: Take out the redirect_uri parameter before production
+              // '&redirect_uri=' + 'https://api.ionic.io/auth/integrations/custom/success';
+            console.log(url);
+            return res.redirect(url)
+            console.log("passed redirect");
+          })
+
 
         }
         else{
