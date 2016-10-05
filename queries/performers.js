@@ -57,5 +57,7 @@ module.exports={
   removePerformance:function(performer_id, event_id){
     return knex('event_performers').del().where({performer_id:performer_id, event_id:event_id})
   },
-
+  getNotificitations:function(performer_id){
+    return knex('notifications').where({performer_id:performer_id});
+  }
 }

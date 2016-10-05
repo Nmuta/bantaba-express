@@ -84,6 +84,11 @@ router.post('/update/:performerId/:token', function(req, res, next){
     res.send('invalid')
   }
 })
+router.get('/notifications/:performerId', function(req, res, next){
+  Performers.getNotifications(req.params.performerId).then(function(results){
+    res.send(results)
+  })
+})
 router.post('/notify/:performerId/:token', function(req, res, next){
   console.log(req.body);
 
