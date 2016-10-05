@@ -58,6 +58,6 @@ module.exports={
     return knex('event_performers').del().where({performer_id:performer_id, event_id:event_id})
   },
   getNotifications:function(performer_id){
-    return knex('notifications').where({performer_id:performer_id});
+    return knex('performer_notifications').where({performer_id:performer_id});
   }
 }
