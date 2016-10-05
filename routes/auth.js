@@ -99,7 +99,7 @@ router.get('/ionic', function(req, res) {
           console.log('did sign');
           var url = redirectUri +
             '&token=' + encodeURIComponent(outgoingToken) +
-            '&state=' + encodeURIComponent(state) +
+            '&state=' + encodeURIComponent(state) 
             // TODO: Take out the redirect_uri parameter before production
             // '&redirect_uri=' + 'https://api.ionic.io/auth/integrations/custom/success';
           console.log(url);
