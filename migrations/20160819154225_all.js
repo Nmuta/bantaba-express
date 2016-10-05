@@ -6,6 +6,7 @@ exports.up = function(knex, Promise) {
 
   }).createTable('users', function(table){
     table.increments();
+    table.uuid('uuid');
     table.string('username');
     table.string('password');
     table.integer('account_type')

@@ -38,6 +38,7 @@ module.exports={
   genToken:function(user){
     console.log(user);
     var claims = {
+      user_id:user.id,
       sub: user.id,
       iss: 'bantaba-server',
       permissions: user.account_type
