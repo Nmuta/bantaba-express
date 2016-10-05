@@ -82,10 +82,13 @@ router.get('/ionic', function(req, res) {
   }
 
   // TODO: Authenticate your own real users here
+  console.log(incomingToken.data);
   var username = incomingToken.data.username;
   var password = incomingToken.data.password;
   var user_id;
+  console.log("no error, i guess");
   authQ.getUserByName(username).then(function(match){
+    console.log("finished username fetch");
     if(match.length===0){
       res.send({error:true, message:'no such user'});
     }
