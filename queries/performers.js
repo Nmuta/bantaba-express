@@ -45,6 +45,9 @@ module.exports={
       })
     })
   },
+  createNotification:function(specs, performer_id){
+    return knex('performer_notifications').insert({performer_id:performer_id, text:specs.text})
+  },
   getFromUser:function(user_id){
     return knex('performers').where({user_id:user_id})
   },

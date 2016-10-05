@@ -84,6 +84,40 @@ router.post('/update/:performerId/:token', function(req, res, next){
     res.send('invalid')
   }
 })
+router.post('/notify/:performerId/:token', function(req, res, next){
+  console.log(req.body);
+
+  try{
+    var parsed=authQ.verifyToken(req.params.token)
+    console.log(parsed);
+    authQ.isAdmin(parsed.body.sub).then(function(matches){
+      if(matches.length>=1 ){
+        Performers.update(req.body, req.params.performerId).then(function(results){
+          res.send('words')
+        })
+      }
+      else{
+        authQ.ownsPerformerAcc(parsed.body.sub, req.params.performerId).then(function(matches){
+          if(matches.length>=1 ){
+            console.log("there is a match");
+            Performers.createNotification(req.body, req.params.performerId).then(function(results){
+              res.send('words')
+            })
+
+          }
+          else{
+            res.send('not authorized')
+
+          }
+        })
+      }
+    })
+  }
+  catch(e){
+    console.log(e);
+    res.send('invalid')
+  }
+})
 router.get('/delete/:performerId/:token', function(req, res, next){
   try{
     var parsed=authQ.verifyToken(req.params.token)
