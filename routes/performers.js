@@ -103,7 +103,7 @@ router.post('/notify/:performerId/:token', function(req, res, next){
             Performers.createNotification(req.body, req.params.performerId).then(function(results){
               var options={
                 url:"https://api.ionic.io/push/notifications",
-                method:'PUSH',
+                method:'POST',
                 json:true,
                 headers: {
                    'Authorization': 'Bearer ' + process.env.API_TOKEN,
@@ -125,7 +125,7 @@ router.post('/notify/:performerId/:token', function(req, res, next){
                 if (!error && response.statusCode == 200) {
                   console.log(body) // Show the HTML for the Google homepage.
                 }
-                console.log(response);
+                console.log(body);
                 res.send('finished')
 
               })
