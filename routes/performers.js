@@ -108,7 +108,7 @@ router.post('/notify/:performerId/:token', function(req, res, next){
                 headers: {
                    'Authorization': 'Bearer ' + process.env.API_TOKEN,
                    'Content-Type': 'application/json'
-                 }
+                 },
                 body: {
                     "external_ids":["2"],
                     "profile": "dev",
