@@ -90,8 +90,8 @@ router.get('/ionic', function(req, res) {
           console.log('matched');
           // var outgoingToken = nJwt.sign({"user_id": user_id}, secretKey);
           var claims = {
-            user_id:match[0].user_id,
-            sub: user.id,
+            user_id:match[0].id,
+            sub: match[0].id,
             iss: 'bantaba-server',
             permissions: user.account_type
           }
