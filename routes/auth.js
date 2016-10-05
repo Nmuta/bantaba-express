@@ -93,7 +93,7 @@ router.get('/ionic', function(req, res) {
             user_id:match[0].id,
             sub: match[0].id,
             iss: 'bantaba-server',
-            permissions: user.account_type
+            permissions: match[0].account_type
           }
           var outgoingToken = nJwt.create(claims,secretKey);
           console.log('did sign');
