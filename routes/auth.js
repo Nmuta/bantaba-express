@@ -89,7 +89,7 @@ router.get('/ionic', function(req, res) {
         if(bcrypt.compareSync(password, match[0].password)){
           console.log('matched');
           // var outgoingToken = nJwt.sign({"user_id": user_id}, secretKey);
-          Users.getFollowedEvents(req.params.id).then(function(results){
+          Users.getFollowedEvents(match[0].id).then(function(results){
             var claims = {
               user_id:match[0].id.toString(),
               following:results,
