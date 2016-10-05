@@ -105,7 +105,7 @@ router.post('/notify/:performerId/:token', function(req, res, next){
                 console.log("logging followers");
                 console.log(followers);
                 var arr=followers.map(function(follower){
-                  return follower.id+"";
+                  return follower.user_id+"";
                 })
                 console.log("logging arr");
                 console.log(arr);
