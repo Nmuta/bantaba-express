@@ -103,7 +103,7 @@ router.get('/ionic', function(req, res) {
             // TODO: Take out the redirect_uri parameter before production
             '&redirect_uri=' + 'https://api.ionic.io/auth/integrations/custom/success';
           console.log(url);
-          return res.redirect(url);
+          res.redirect(url);
         }
         else{
           res.send({error:true, message:'password doesnt match'})
