@@ -88,7 +88,14 @@ router.get('/ionic', function(req, res) {
       else{
         if(bcrypt.compareSync(password, match[0].password)){
           console.log('matched');
-          var outgoingToken = nJwt.sign({"user_id": user_id}, secretKey);
+          // var outgoingToken = nJwt.sign({"user_id": user_id}, secretKey);
+          var claims = {
+            user_id:match[0].user_id,
+            sub: user.id,
+            iss: 'bantaba-server',
+            permissions: user.account_type
+          }
+          var outgoingToken = nJwt.create(claims,secretKey);
           console.log('did sign');
           var url = redirectUri +
             '&token=' + encodeURIComponent(outgoingToken) +
