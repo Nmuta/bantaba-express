@@ -75,6 +75,35 @@ router.get('/ionic', function(req, res) {
   var state = req.query.state;
   try {
     var incomingToken = nJwt.verify(req.query.token, secretKey);
+    console.log(incomingToken.data);
+    var username = incomingToken.data.username;
+    var password = incomingToken.data.password;
+    var user_id;
+    console.log("no error, i guess");
+    authQ.getUserByName(username).then(function(match){
+      console.log("finished username fetch");
+      if(match.length===0){
+        res.send({error:true, message:'no such user'});
+      }
+      else{
+        if(bcrypt.compareSync(password, match[0].password)){
+          console.log('matched');
+          var outgoingToken = nJwt.sign({"user_id": user_id}, secretKey);
+          console.log('did sign');
+          var url = redirectUri +
+            '&token=' + encodeURIComponent(outgoingToken) +
+            '&state=' + encodeURIComponent(state) +
+            // TODO: Take out the redirect_uri parameter before production
+            '&redirect_uri=' + 'https://api.ionic.io/auth/integrations/custom/success';
+          return res.redirect(url);
+        }
+        else{
+          res.send({error:true, message:'password doesnt match'})
+        }
+
+      }
+    })
+
   } catch (ex) { // lots of stuff can go wrong while decoding the jwt
     console.log("some sort of errorrrrr......");
     console.error(ex.stack);
@@ -82,34 +111,6 @@ router.get('/ionic', function(req, res) {
   }
 
   // TODO: Authenticate your own real users here
-  console.log(incomingToken.data);
-  var username = incomingToken.data.username;
-  var password = incomingToken.data.password;
-  var user_id;
-  console.log("no error, i guess");
-  authQ.getUserByName(username).then(function(match){
-    console.log("finished username fetch");
-    if(match.length===0){
-      res.send({error:true, message:'no such user'});
-    }
-    else{
-      if(bcrypt.compareSync(password, match[0].password)){
-        console.log('matched');
-        var outgoingToken = nJwt.sign({"user_id": user_id}, secretKey);
-        console.log('did sign');
-        var url = redirectUri +
-          '&token=' + encodeURIComponent(outgoingToken) +
-          '&state=' + encodeURIComponent(state) +
-          // TODO: Take out the redirect_uri parameter before production
-          '&redirect_uri=' + 'https://api.ionic.io/auth/integrations/custom/success';
-        return res.redirect(url);
-      }
-      else{
-        res.send({error:true, message:'password doesnt match'})
-      }
-
-    }
-  })
 
   // authentication failure
 
