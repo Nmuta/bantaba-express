@@ -70,6 +70,7 @@ router.post('/login', function(req, res, nex){
 })
 router.get('/ionic', function(req, res) {
   // request received from Ionic Auth
+  console.log("in the router");
   var redirectUri = req.query.redirect_uri;
   var state = req.query.state;
   try {
