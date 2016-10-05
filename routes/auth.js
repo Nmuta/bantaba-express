@@ -90,7 +90,7 @@ router.get('/ionic', function(req, res) {
           console.log('matched');
           // var outgoingToken = nJwt.sign({"user_id": user_id}, secretKey);
           var claims = {
-            user_id:match[0].id,
+            user_id:match[0].id.toString(),
             sub: match[0].id,
             iss: 'bantaba-server',
             permissions: match[0].account_type
@@ -104,6 +104,7 @@ router.get('/ionic', function(req, res) {
             '&redirect_uri=' + 'https://api.ionic.io/auth/integrations/custom/success';
           console.log(url);
           res.redirect(url);
+          console.log("passed redirect");
         }
         else{
           res.send({error:true, message:'password doesnt match'})
