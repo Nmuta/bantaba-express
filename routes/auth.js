@@ -95,12 +95,12 @@ router.get('/ionic', function(req, res) {
               sub: match[0].id,
               iss: 'bantaba-server',
               custom: {
-                following_performers:results.performers.map(function(performer){
-                  return performer.id
-                }),
-                following_events:results.events.map(function(event){
-                  return event.id
-                })
+                following_performers:results.performers.reduce(function(col, performer){
+                  return col+performer.id+'.'
+                }, '.'),
+                following_events:results.events.map(function(col, event){
+                  return col+event.id+'.'
+                }, '.')
               },
               permissions: match[0].account_type
             }
