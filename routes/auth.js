@@ -98,7 +98,7 @@ router.get('/ionic', function(req, res) {
                 following_performers:results.performers.reduce(function(col, performer){
                   return col+performer.id+'.'
                 }, '.'),
-                following_events:results.events.map(function(col, event){
+                following_events:results.events.reduce(function(col, event){
                   return col+event.id+'.'
                 }, '.')
               },
