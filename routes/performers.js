@@ -102,10 +102,12 @@ router.post('/notify/:performerId/:token', function(req, res, next){
             console.log("there is a match");
             Performers.createNotification(req.body, req.params.performerId).then(function(results){
               Performers.getFollowers(req.params.performerId).then(function(followers){
+                console.log("logging followers");
                 console.log(followers);
                 var arr=followers.map(function(follower){
                   return follower.id+"";
                 })
+                console.log("logging arr");
                 console.log(arr);
                 var options={
                   url:"https://api.ionic.io/push/notifications",
