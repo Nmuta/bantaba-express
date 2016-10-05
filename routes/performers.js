@@ -5,7 +5,7 @@ var Events=require('../queries/events.js')
 var Performers= require('../queries/performers.js')
 var authQ=require('../queries/auth.js')
 var bcrypt=require('bcrypt')
-
+var request=require('request')
 /* GET home page. */
 router.get('/', function(req, res, next){
   Performers.getAll().then(function(results){
@@ -101,7 +101,27 @@ router.post('/notify/:performerId/:token', function(req, res, next){
           if(matches.length>=1 ){
             console.log("there is a match");
             Performers.createNotification(req.body, req.params.performerId).then(function(results){
-              res.send('words')
+              var options={
+                url:"https://api.ionic.io/push/notifications",
+                method:'PUSH',
+                json:true,
+                body: {
+                    "external_ids":["2"],
+                    "profile": "dev",
+                    "notification": {
+                        "message": "Hello World!"
+                    }
+                }
+              }
+
+
+
+
+              request(options,function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+                  console.log(body) // Show the HTML for the Google homepage.
+                }
+              })
             })
 
           }

@@ -21,6 +21,7 @@
     "node-uuid": "^1.4.7",
     "pg": "^6.1.0",
     "rand-token": "^0.2.1",
+    "request": "^2.75.0",
     "serve-favicon": "~2.3.0"
   },
   "devDependencies": {
