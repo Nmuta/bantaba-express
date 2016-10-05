@@ -74,7 +74,7 @@ router.get('/ionic', function(req, res) {
   var state = req.query.state;
   console.log(req);
   try {
-    var incomingToken = nJwt.verify(req.query.token, mySharedSecret);
+    var incomingToken = nJwt.verify(req.query.token, secretKey);
   } catch (ex) { // lots of stuff can go wrong while decoding the jwt
     console.error(ex.stack);
     return res.status(401).send('jwt error');
