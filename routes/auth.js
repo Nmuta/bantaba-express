@@ -92,9 +92,12 @@ router.get('/ionic', function(req, res) {
           Users.getFollowedEvents(match[0].id).then(function(results){
             var claims = {
               user_id:match[0].id.toString(),
-              following:results,
               sub: match[0].id,
               iss: 'bantaba-server',
+              "custom": {
+                following:results,
+
+              }
               permissions: match[0].account_type
             }
             var outgoingToken = nJwt.create(claims,secretKey);
