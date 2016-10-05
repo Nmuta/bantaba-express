@@ -3,6 +3,8 @@ var router = express.Router();
 var authQ= require('../queries/auth.js')
 var bcrypt=require('bcrypt')
 var randToken=require('rand-token')
+var uuid = require('node-uuid');
+
 var nJwt = require('njwt');
 
 var secretKey = process.env.SECRET_KEY || uuid.v4();
@@ -66,7 +68,7 @@ router.post('/login', function(req, res, nex){
     }
   })
 })
-app.get('/ionic', function(req, res) {
+router.get('/ionic', function(req, res) {
   // request received from Ionic Auth
   var redirectUri = req.query.redirect_uri;
   var state = req.query.state;
