@@ -74,7 +74,7 @@ router.get('/ionic', function(req, res) {
   var state = req.query.state;
   console.log(req);
   try {
-    var incomingToken = jwt.verify(req.query.token, mySharedSecret);
+    var incomingToken = nJwt.verify(req.query.token, mySharedSecret);
   } catch (ex) { // lots of stuff can go wrong while decoding the jwt
     console.error(ex.stack);
     return res.status(401).send('jwt error');
@@ -90,7 +90,7 @@ router.get('/ionic', function(req, res) {
     }
     else{
       if(bcrypt.compareSync(password, match[0].password)){
-        var outgoingToken = jwt.sign({"user_id": user_id}, secretKey);
+        var outgoingToken = nJwt.sign({"user_id": user_id}, secretKey);
         var url = redirectUri +
           '&token=' + encodeURIComponent(outgoingToken) +
           '&state=' + encodeURIComponent(state) +
