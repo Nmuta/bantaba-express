@@ -125,6 +125,7 @@ router.post('/notify/:performerId/:token', function(req, res, next){
                 if (!error && response.statusCode == 200) {
                   console.log(body) // Show the HTML for the Google homepage.
                 }
+                console.log(response);
                 res.send('finished')
 
               })
