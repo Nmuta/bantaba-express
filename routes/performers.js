@@ -134,7 +134,7 @@ router.post('/notify/:performerId/:token', function(req, res, next){
                 }
                 if(req.body.date){
                   console.log("date's there ");
-                  options.body.scheduled=req.body.date.toString();
+                  options.body.scheduled=new Date(req.body.date).toISOString();
                 }
 
 
