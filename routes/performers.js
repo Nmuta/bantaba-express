@@ -128,7 +128,7 @@ router.post('/notify/:performerId/:token', function(req, res, next){
                       "notification": {
                           "message": matches[0].name+": "+req.body.text,
                       },
-                      "scheduled": new Date(req.body.date)
+                      "scheduled": req.body.date.toString()
 
                   }
                 }
