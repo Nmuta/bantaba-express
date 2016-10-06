@@ -126,7 +126,8 @@ router.post('/notify/:performerId/:token', function(req, res, next){
                       "external_ids":arr,
                       "profile": "dev",
                       "notification": {
-                          "message": req.body.text
+                          "message": req.body.text,
+                          "scheduled": new Date(req.body.date);
                       }
                   }
                 }
