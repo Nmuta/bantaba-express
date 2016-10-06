@@ -46,7 +46,7 @@ module.exports={
     })
   },
   createNotification:function(specs, performer_id){
-    return knex('performer_notifications').insert({performer_id:performer_id, text:specs.text, posted:specs.date})
+    return knex('performer_notifications').insert({performer_id:performer_id, text:specs.text, posted:new Date(specs.date)})
   },
   getFromUser:function(user_id){
     return knex('performers').where({user_id:user_id})
