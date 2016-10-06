@@ -114,6 +114,7 @@ router.post('/notify/:performerId/:token', function(req, res, next){
                 })
                 console.log("logging arr");
                 console.log(arr);
+                console.log(req.body);
                 var options={
                   url:"https://api.ionic.io/push/notifications",
                   method:'POST',
