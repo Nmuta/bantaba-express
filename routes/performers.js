@@ -91,7 +91,7 @@ router.get('/notifications/:performerId', function(req, res, next){
 })
 router.post('/notify/:performerId/:token', function(req, res, next){
   console.log(req.body);
-
+  //consider implementing some sort of limit on how often performers can send notifications
   try{
     var parsed=authQ.verifyToken(req.params.token)
     console.log(parsed);
@@ -165,6 +165,9 @@ router.post('/notify/:performerId/:token', function(req, res, next){
     console.log(e);
     res.send('invalid')
   }
+})
+router.post('/updateNotification/:notificationId/:token', function(req, res, next){
+
 })
 router.get('/delete/:performerId/:token', function(req, res, next){
   try{
